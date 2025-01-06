@@ -46,11 +46,6 @@ This repository contains snapshots from a technical lab session focusing on **As
 
 ---
 
-## 🚀 **How to Reproduce the Snapshots**
-1. Write a simple C program (`sum.c`) in a text editor.
-2. Compile using:  
-   ```bash
-   gcc -g -o sum sum.c
 ![riscvdi2](https://github.com/user-attachments/assets/4c0c01b1-0fb0-4182-b5da-029b5038eb10)
 ![riscvdi3](https://github.com/user-attachments/assets/11c55d68-3607-4f9c-be56-312e39f43dbd)
 ![riscvdi1](https://github.com/user-attachments/assets/5d775210-4d43-4cf2-838c-dc44b43849ff)
