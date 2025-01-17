@@ -169,7 +169,93 @@ J-type instructions perform jump operations, often used for loops or function ca
 | imm     | 20 bits| Jump offset                      |
 
 
-
 ![image](https://github.com/user-attachments/assets/6c501798-bd28-4312-ba66-7adc2a2a851a)
+
+
+
+# RISC-V 15 Unique Instructions and Their 32-Bit Machine Codes
+I've identified 15 unique RISC-V instructions from the object file, and for each instruction to determine its exact 32-bit machine code in the format `opcode rd, rs, immediate`to ensure the instruction type and operations are clearly specified.
+
+
+![image](https://github.com/user-attachments/assets/972543b0-1292-4edc-8f37-37914593f509)
+
+
+### **R-Type Instructions**  
+Format: `opcode | rd | funct3 | rs1 | rs2 | funct7`
+
+1. **`add s0, s0, 8`**  
+   **Instruction Code**: `00828293`  
+   **Expanded**: `0000000 | 1000 | 010 | 00010 | 01010 | 0110011`  
+
+---
+
+### **I-Type Instructions**  
+Format: `immediate | rs1 | funct3 | rd | opcode`
+
+2. **`li a0, 45`** (Load Immediate)  
+   **Instruction Code**: `00800593`  
+   **Expanded**: `0000000000101101 | 00000 | 000 | 01010 | 0010011`  
+
+3. **`ld ra, 8(sp)`** (Load Doubleword)  
+   **Instruction Code**: `00812083`  
+   **Expanded**: `0000000000001000 | 00010 | 011 | 00010 | 0000011`  
+
+4. **`jalr a5, ra, 0`** (Jump and Link Register)  
+   **Instruction Code**: `000f8067`  
+   **Expanded**: `0000000000000000 | 11110 | 000 | 11111 | 1100111`  
+
+---
+
+### **S-Type Instructions**  
+Format: `immediate[11:5] | rs2 | rs1 | funct3 | immediate[4:0] | opcode`
+
+5. **`sw ra, 8(sp)`** (Store Word)  
+   **Instruction Code**: `00f12223`  
+   **Expanded**: `0000000 | 11110 | 00010 | 010 | 01000 | 0100011`  
+
+6. **`sd ra, 16(sp)`** (Store Doubleword)  
+   **Instruction Code**: `00a12023`  
+   **Expanded**: `0000000 | 11110 | 00010 | 011 | 10000 | 0100011`  
+
+---
+
+### **B-Type Instructions**  
+Format: `immediate[12|10:5] | rs2 | rs1 | funct3 | immediate[4:1|11] | opcode`
+
+7. **`beqz a5, <exit+0x2c>`** (Branch if Equal to Zero)  
+   **Instruction Code**: `fe010ee3`  
+   **Expanded**: `1111111 | 11111 | 00010 | 000 | 11100 | 1100011`  
+
+---
+
+### **U-Type Instructions**  
+Format: `immediate[31:12] | rd | opcode`
+
+8. **`lui a0, 0x23150`** (Load Upper Immediate)  
+   **Instruction Code**: `23150537`  
+   **Expanded**: `0010001101010000 | 01010 | 0110111`  
+
+9. **`auipc a5, 0x477`** (Add Upper Immediate to PC)  
+   **Instruction Code**: `47728097`  
+   **Expanded**: `0100011101110111 | 01000 | 0010111`  
+
+---
+
+### **J-Type Instructions**  
+Format: `immediate[20|10:1|11|19:12] | rd | opcode`
+
+10. **`jal ra, <printf>`** (Jump and Link)  
+    **Instruction Code**: `000080e7`  
+    **Expanded**: `0000000000001000 | 00000 | 1101111`  
+
+11. **`j <exit>`** (Jump)  
+    **Instruction Code**: `4300006f`  
+    **Expanded**: `0100001100000000 | 00000 | 1101111`  
+
+---
+
+
+
+
 
 
