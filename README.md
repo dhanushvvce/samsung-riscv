@@ -14,41 +14,58 @@ LinkedIN Profile: https://www.linkedin.com/in/dhanush-n-779145211/
 <details>
 <summary> <b>Task 1</b></summary>
 <br>
-The task involves referring to lab videos on C programming and RISC-V, and performing the compilation of C code using both the GCC compiler and the RISC-V compiler.
-   
-## C Language
-### Compilation using GCC Compiler
+# samsung-riscv
 
-Steps to compile any `.c` file :
+# 📊 **Lab Snapshots: Assembly and C Programming Debugging**
 
-1. Open the bash terminal and navigate to the directory where you want to create your file.
-2. Run the following command to create and open the file in the editor:
-   ```bash
-   gedit sum1ton.c
-3. Use these commands to run the C code:
-    ```bash
-   gcc sum1ton.c
-   ./a.out
-![sum1ton code](https://github.com/user-attachments/assets/1d88196a-812d-4977-bc33-75df96489417)
+## 📑 **Overview**
+This repository contains snapshots from a technical lab session focusing on **Assembly-level debugging**, **C programming**, and **Memory Analysis**. These images showcase code execution, disassembly views, and error analysis during program execution.
 
-## RISC-V
-Compile the code using the RISC-V GCC compiler using these commands:
-1. Display c code:
-   ```bash
-   cat sum1ton.c
-2. Command to compile code
-   ```
-   riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
-3. Displays the assembly language code
-   ```
-   riscv64-unknown-elf-objdump -d sum1ton.o
-![riscv1](https://github.com/user-attachments/assets/0aa98971-6197-417c-9e0a-6d9d5a561225)
+---
 
-4. Type `/main` to locate the main section in code
-   
-![RISCV2](https://github.com/user-attachments/assets/a844c11d-190c-4347-b937-49bc490f7166)
+## 🛠️ **Snapshots Description**
 
-</details>
+### 🖥️ **1. Assembly-Level Debugging Snapshot**
+- **Description:** Analysis of low-level assembly instructions from a compiled program.
+- **Key Focus:**
+   - Register-level operations.
+   - Memory address references.
+   - Function call traces.
+- **Purpose:** Understand how high-level C code maps to machine instructions.
+
+---
+
+### 📝 **2. C Program Snapshot**
+- **Description:** Simple C program to calculate the **sum of numbers from 1 to n** using a loop.
+- **Key Focus:**
+   - Syntax and logic analysis.
+   - Debugging `printf` statements.
+   - Correct usage of loops.
+- **Purpose:** Identify and resolve logical and syntactical errors in the C code.
+
+---
+
+### ⚙️ **3. Assembly Disassembly Snapshot**
+- **Description:** Detailed disassembly of the **main function** in an executable.
+- **Key Focus:**
+   - Conditional branching.
+   - Stack and heap memory operations.
+   - Instruction-level execution.
+- **Purpose:** Optimize and debug program execution at the machine level.
+
+---
+
+## 📚 **Technologies Used**
+- **Programming Language:** C
+- **Tools:** GCC Compiler, GDB Debugger, Terminal
+- **OS Environment:** Linux/Ubuntu (Virtual Machine)
+
+---
+
+![riscvdi2](https://github.com/user-attachments/assets/4c0c01b1-0fb0-4182-b5da-029b5038eb10)
+![riscvdi3](https://github.com/user-attachments/assets/11c55d68-3607-4f9c-be56-312e39f43dbd)
+![riscvdi1](https://github.com/user-attachments/assets/5d775210-4d43-4cf2-838c-dc44b43849ff)
+
 
 <details>
 <summary><b>Task 2</b></summary>
