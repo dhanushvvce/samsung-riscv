@@ -1,4 +1,6 @@
+# Samsung-riscv
 
+# Task-4
 
 
 Installed iverilog and GTKwave 
