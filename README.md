@@ -338,3 +338,6 @@ Format: `immediate[20|10:1|11|19:12] | rd | opcode`
 
 ---
 </details>
+<details>   
+<summary><b>Task 4:</b> Understanding RISC-V and Its Instruction Formats</summary>   
+<br>
