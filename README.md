@@ -1,3 +1,11 @@
+# Samsung-RISCV
+This course teaches users about VLSI chip design and RISC-V using open-source tools and is based on the RISC-V architecture. Kunal Ghosh Sir is the workshop's instructor.
+## Profile Details:
+##### Name: Dhanush N
+##### College: Vidyavardhaka College of Engineering
+##### Email: dhanushn200304@gmail.com
+##### GitHub Profile: dhanushvvce
+##### LinkedIN: https://www.linkedin.com/in/dhanush-n-779145211
 <details>
 <summary><b>Task 1:</b>Lab Snapshots: Assembly and C Programming Debugging</summary>   
 <br>
