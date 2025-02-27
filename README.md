@@ -473,109 +473,82 @@ int main(void) {
 <summary><b>Task 6:</b> Intruder Detection using IR Sensor</summary>   
 <br>
 
-# Intruder Detection using IR Sensor
+# **IR Sensor-Based Hurdle Detection with LED Alert (RISC-V Board)**  
 
-## Overview
-This project is part of Task 6 of the Samsung RISC-V program. The objective is to design an intruder detection system using an IR sensor, a buzzer, and an LED. When an intruder is detected, the system activates an alarm (buzzer) and visual alert (LED) to notify about unauthorized access.
+## **Project Overview**  
+This project demonstrates **hurdle detection** using an **Infrared (IR) sensor** interfaced with a **RISC-V development board**. The system continuously monitors for obstacles, and when one is detected, an **LED indicator lights up** or blinks as an alert. This setup is useful for applications such as **autonomous robots, security systems, and smart automation**.  
 
-![alt text](image.png)
+---
 
-![alt text](image-2.png)
+## **Hardware Components**  
+To build this project, you will need:  
+- **RISC-V Development Board** 
+- **IR Proximity Sensor**  
+- **LED** (for visual indication)  
+- **Resistor (330Ω)** (for LED current limiting)  
+- **Connecting jumper Wires**  
+- **Breadboard** 
 
-![alt text](image-1.png)
+---
 
-## Components Required:
+## **How It Works**  
+1. The **IR sensor** emits infrared light and detects reflections from nearby objects.  
+2. If an object is detected, the **IR sensor outputs a LOW signal**; otherwise, it remains HIGH.  
+3. The **RISC-V board reads the sensor signal** and processes the data.  
+4. If an obstacle is detected, the **LED turns ON or blinks**, providing a visual alert.  
+5. The system continuously checks for obstacles in a loop.  
 
-1. VSD Squadron Mini
-2. IR Sensor
-3. Buzzer
-4. LED
-5. 330 ohm Resistor
-6. Jumper wires
-7. Breadboard
+---
 
-## Pin Connections:
+## **Circuit Connections**  
+| Component         | Pin Connection (RISC-V Board) |
+|------------------|-----------------------------|
+| **IR Sensor VCC**  | **3.3V / 5V**                               |
+| **IR Sensor OUT**  | **GPIO (GPIO5)**      |
+| **LED Anode (+)**  | **GPIO (GPIO6)**     |
+| **LED Cathode (-)**| **GND**                     |
 
-| **Component** | **PIN on Board** |
-|--------------|------------------|
-| LED         | Pin 6             |
-| Buzzer      | Pin 5             |
-| IR Sensor   | Pin 4             |
 
-## Working Principle:
-The IR sensor detects an object in its proximity. When an intruder is detected:
-- The sensor sends a signal to the microcontroller.
-- The microcontroller processes the signal and turns ON the LED and buzzer.
-- The system remains in an alert state until the intruder is no longer detected.
-
-## Code Implementation:
-The program will be written in C and deployed on the VSD Squadron Mini board. It will read the sensor input and control the LED and buzzer accordingly.
-```bash
+```c
 #include <ch32v00x.h>
 #include <debug.h>
 
-void GPIO_Config(void)
-{
-GPIO_InitTypeDef GPIO_InitStructure = {0}; //structure variable GPIO_InitStructure of type GPIO_InitTypeDef which is used for GPIO configuration.
-
-RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); // to Enable the clock for Port C
-//pin 4 OUT PIN FOR IR SENSOR
-GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 ; // Defines which Pin to configure
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; // Defines Input Type
-GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-//Pin 5 for Buzzer
-GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 ; // Defines which Pin to configure
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; // Defines Output Type
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // Defines speed
-GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-//pin 6 IS LED PIN
-GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ; //
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; // Defines Output Type
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // Defines speed
-
-GPIO_Init(GPIOC, &GPIO_InitStructure);
-
+void GPIO_Config(void) {
+    GPIO_InitTypeDef GPIO_InitStructure = {0};
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+    
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+    
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
 }
 
-
-int main(void)
-{
-uint8_t IR = 0;
-uint8_t set=1;
-uint8_t reset=0;
-NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);// Configuring NVIC priority group
-SystemCoreClockUpdate();// Update System Core Clock
-GPIO_Config();//Call GPIO configuration function
-
-while(1)
-{
-    IR = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_4);
-    if (IR==1)
-    {
-        //If IR sensor detects, then Buzzer and LED will be ON
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, set);
-        GPIO_WriteBit(GPIOC, GPIO_Pin_5, set);
+int main(void) {
+    uint8_t IR = 0;
+    uint8_t set = 1;
+    uint8_t reset = 0;
+    
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+    SystemCoreClockUpdate();
+    Delay_Init();
+    GPIO_Config();
+    
+    while(1) {
+        IR = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4);
+        if (IR == 1) {
+            GPIO_WriteBit(GPIOD, GPIO_Pin_6, reset);
+        } else {
+            GPIO_WriteBit(GPIOD, GPIO_Pin_6, set);
         }
-    
-    else{
-        //If IR sensor doesn't detect, then Buzzer and LED will be OFF
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6,reset);
-        GPIO_WriteBit(GPIOC, GPIO_Pin_5,reset);
+        Delay_Ms(100);
     }
-
-    }
-    
 }
 ```
 
-## Applications:
-- Home security systems
-- Automated door security
-- Industrial safety systems
 
-## Future Improvements:
-- Integration with GSM module for remote alerts
-- Implementation of a camera module for image capturing
-- Enhancing detection range with multiple sensors
+
+---
