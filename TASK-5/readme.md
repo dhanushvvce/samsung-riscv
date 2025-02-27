@@ -1,103 +1,81 @@
-# 🚀 Intruder Detection System Using IR Sensor & VSDSquadron Mini  
 
-![Circuit Diagram](https://github.com/user-attachments/assets/6c766d4c-65ed-44d8-8b0b-a8b40a8989a1)  
+# **IR Sensor-Based Hurdle Detection with LED Alert (RISC-V Board)**  
 
-## 📌 Overview  
-
-The **Intruder Detection System** is a **real-time security solution** that detects unauthorized movement using an **Infrared (IR) sensor** and processes signals with the **VSDSquadron Mini FPGA board**. Upon detecting an intruder, the system **triggers an alert mechanism** such as a buzzer or LED.  
-
-This project provides an **efficient, scalable, and cost-effective security solution** that can be further enhanced with **wireless communication, AI-based recognition, and cloud integration**.  
+## **Project Overview**  
+This project demonstrates **hurdle detection** using an **Infrared (IR) sensor** interfaced with a **RISC-V development board**. The system continuously monitors for obstacles, and when one is detected, an **LED indicator lights up** or blinks as an alert. This setup is useful for applications such as **autonomous robots, security systems, and smart automation**.  
 
 ---
 
-## 🎯 Features  
-✔ **Real-time intrusion detection** using an IR sensor  
-✔ **FPGA-based signal processing** for fast response  
-✔ **Customizable alert mechanism** (buzzer, LED, or wireless notification)  
-✔ **Scalable** – Can integrate **AI, cloud, and IoT** for enhanced security  
-✔ **Low-cost & energy-efficient**  
+## **Hardware Components**  
+To build this project, you will need:  
+- **RISC-V Development Board** 
+- **IR Proximity Sensor**  
+- **LED** (for visual indication)  
+- **Resistor (330Ω)** (for LED current limiting)  
+- **Connecting jumper Wires**  
+- **Breadboard** 
 
 ---
 
-## 🛠️ Components Required  
-
-| **Component**      | **Specification** |
-|--------------------|------------------|
-| VSD Squadron Mini | FPGA Development Board |
-| IR Sensor         | Motion Detection |
-| Buzzer           | Alarm System |
-| LED              | Visual Alert |
-| 330-ohm Resistor | Current Limiting |
-| Jumper Wires     | Circuit Connections |
-| Breadboard       | Prototyping |
+## **How It Works**  
+1. The **IR sensor** emits infrared light and detects reflections from nearby objects.  
+2. If an object is detected, the **IR sensor outputs a LOW signal**; otherwise, it remains HIGH.  
+3. The **RISC-V board reads the sensor signal** and processes the data.  
+4. If an obstacle is detected, the **LED turns ON or blinks**, providing a visual alert.  
+5. The system continuously checks for obstacles in a loop.  
 
 ---
 
-## 🔗 Circuit Pin Connections  
+## **Circuit Connections**  
+| Component         | Pin Connection (RISC-V Board) |
+|------------------|-----------------------------|
+| **IR Sensor VCC**  | **3.3V / 5V**                               |
+| **IR Sensor OUT**  | **GPIO (GPIO5)**      |
+| **LED Anode (+)**  | **GPIO (GPIO6)**     |
+| **LED Cathode (-)**| **GND**                     |
 
-| **Component** | **Pin on Board** |
-|--------------|------------------|
-| **LED**      | Pin 6 |
-| **Buzzer**   | Pin 5 |
-| **IR Sensor** | Pin 4 |
 
----
+```c
+#include <ch32v00x.h>
+#include <debug.h>
 
-## ⚡ How It Works  
+void GPIO_Config(void) {
+    GPIO_InitTypeDef GPIO_InitStructure = {0};
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+    
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+    
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+}
 
-1️⃣ The **IR sensor** detects motion based on **infrared radiation** emitted by objects.  
-2️⃣ If movement is detected, the **VSDSquadron Mini FPGA** processes the signal.  
-3️⃣ The system **triggers an alert** via a **buzzer, LED, or other notification methods**.  
-4️⃣ The system can be enhanced with **AI-based detection, wireless alerts, or smart monitoring**.  
+int main(void) {
+    uint8_t IR = 0;
+    uint8_t set = 1;
+    uint8_t reset = 0;
+    
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+    SystemCoreClockUpdate();
+    Delay_Init();
+    GPIO_Config();
+    
+    while(1) {
+        IR = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4);
+        if (IR == 1) {
+            GPIO_WriteBit(GPIOD, GPIO_Pin_6, reset);
+        } else {
+            GPIO_WriteBit(GPIOD, GPIO_Pin_6, set);
+        }
+        Delay_Ms(100);
+    }
+}
+```
 
----
 
-## 📌 Applications  
-
-This system is **versatile** and can be used in various domains:  
-
-### 🔹 **Home Security**  
-- Detects intruders in **houses, apartments, and gated communities**  
-- Can send **real-time alerts** via a **smart home system**  
-
-### 🔹 **Industrial & Commercial Security**  
-- Protects **factories, warehouses, and office spaces**  
-- Restricts access to **high-security zones**  
-
-### 🔹 **Military & Border Surveillance**  
-- Detects **unauthorized personnel movements** in restricted areas  
-- Can be deployed for **border security and military monitoring**  
-
-### 🔹 **ATM & Bank Security**  
-- Prevents theft by detecting **suspicious movements near ATMs**  
-- Triggers **alarms during unauthorized access attempts**  
-
-### 🔹 **Smart Parking & Access Control**  
-- Monitors **vehicle entry and exit** in **parking lots**  
-- Can trigger **automated gates or barriers**  
-
-### 🔹 **Wildlife & Agricultural Monitoring**  
-- Tracks **animal movement in restricted farming areas**  
-- Helps in **wildlife conservation and anti-poaching efforts**  
-
-### 🔹 **Hospital & Elderly Care Monitoring**  
-- Detects **falls or unusual movement patterns** for patient safety  
-- Can be used in **elderly care facilities for security and monitoring**  
-
----
-
-## 🏗️ Future Enhancements  
-
-🔹 **AI-powered detection** for enhanced accuracy  
-🔹 **Wireless connectivity** for remote alerts and monitoring  
-🔹 **Cloud-based integration** for centralized security control  
-🔹 **Multi-sensor networking** for broader coverage  
 
 ---
 
-## 🚀 Installation & Setup  
-
-### 1️⃣ **Clone this Repository**  
-```bash
-git clone https://github.com/your-repo/intruder-detection-ir-sensor.git
-cd intruder-detection-ir-sensor
